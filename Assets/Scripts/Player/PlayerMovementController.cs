@@ -1,51 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(Animator))]
 public class PlayerMovementController : MonoBehaviour {
 
     public float playerSpeed = 10f;
-    Vector3 mousePos = new Vector3();
-    Vector3 relativeMousePos = new Vector3();
-    Vector3 objectPos = new Vector3();
-    void Start() {
+    Animator animator;
 
+    void Start() {
+        animator = GetComponent<Animator>();
     }
 
     void Update() {
-        Movement();
+        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Magnitude", movement.magnitude);
+        transform.position = transform.position + movement * Time.deltaTime * playerSpeed;
     }
 
-    void Movement() {
-        if (Input.GetKey("up")) {
-            transform.Translate(0, playerSpeed * Time.deltaTime, 0);
-        }
-        if (Input.GetKey("down")) {
-            transform.Translate(0, -playerSpeed * Time.deltaTime, 0);
-        }
-        if (Input.GetKey("right")) {
-            transform.Translate(playerSpeed * Time.deltaTime, 0, 0);
-        }
-        if (Input.GetKey("left")) {
-            transform.Translate(-playerSpeed * Time.deltaTime, 0, 0);
-        }
-    }
-
-    //360 degree rotation
-    void RotatePlayerTowardsMouse() {
-        relativeMousePos = MousePositionRelativeToPlayer();
-        float rotationAngel = Mathf.Atan2(relativeMousePos.y, relativeMousePos.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotationAngel));
-    }
-
-    //eight side rotation
-    void AngularPlayerRotationTowardsMouse() {
-        Debug.Log(MousePositionRelativeToPlayer());
-    }
-
-    Vector3 MousePositionRelativeToPlayer() {
-        mousePos = Input.mousePosition;
-        objectPos = Camera.main.WorldToScreenPoint(transform.position);
-        return mousePos - objectPos;
-    }
 }
