@@ -23,18 +23,30 @@ public static class StreamIO
             builder = new StringBuilder();
         }
         writer.Close();
-        LoadFromPath(path, programIteration);
+        //LoadFromPath();
     }
 
-    public static int[,] LoadFromPath(string path, int sampleNumber) {
+    public static int[,] LoadFromPath(string path = @"C:\repos\Rogal\Data\", int sampleNumber = 0) {
         
-        string input = File.ReadAllText(path + "Sample" + sampleNumber.ToString()).Skip(1).ToString();
-        Debug.Log(input);
-        int x = 0, y = 0;
-        foreach(var row in input.Split('\n')) {
-            foreach( var col in row.Trim(' ')) {
-
+        using(StreamReader reader = new StreamReader(@"Data\Sample0.txt")) {
+            string firstLine = reader.ReadLine();
+            string secondLine = reader.ReadLine();
+            string remaining = reader.ReadToEnd();
+            string[] stringMapArray = remaining.Split(' ', '\n');
+            string[] config = secondLine.Split(' ');
+            int width = int.Parse(config[0]);
+            int height = int.Parse(config[1]);
+            Debug.Log(width);
+            Debug.Log(height);
+            int[,] map = new int[width,height];
+            int i = 0;
+            for(int y = 0; y<height; y++) {
+                for(int x=0; x<width; x++) {
+                    map[x, y] = int.Parse(stringMapArray[i]);
+                    i++;
+                }
             }
+            return map;
         }
         return null;
     }

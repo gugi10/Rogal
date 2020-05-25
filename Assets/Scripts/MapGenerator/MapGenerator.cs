@@ -17,6 +17,7 @@ public class MapGenerator : MonoBehaviour {
     public int randomFillPercent;
 
     int[,] map;
+    int[,] borderedMap;
 
     string path = "Data/";
     int programIteration = 0;
@@ -29,10 +30,13 @@ public class MapGenerator : MonoBehaviour {
         if (Input.GetMouseButtonDown(0)) {
             GenerateMap();
         }
+        if (Input.GetMouseButton(1)) {
+            GenerateM(map);   
+        }
     }
 
     public void GenerateM(int [,] mapToLoad) {
-        
+        map = StreamIO.LoadFromPath();
     }
 
     private void OnDrawGizmos() {
@@ -72,7 +76,7 @@ public class MapGenerator : MonoBehaviour {
         //ProcessMap();
 
         int borderSize = 1;
-        int[,] borderedMap = new int[width + borderSize * 2, height + borderSize * 2];
+        borderedMap = new int[width + borderSize * 2, height + borderSize * 2];
 
         for (int x = 0; x < borderedMap.GetLength(0); x++) {
             for (int y = 0; y < borderedMap.GetLength(1); y++) {
