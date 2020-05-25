@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964127, b: 0.57481724, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -367,10 +367,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1642607849}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fdd28918e40ab54fa5711c573a62ee4, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e67e1be29bb4c4498063317454dbb09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walls: {fileID: 0}
+  walls: {fileID: 28670579}
   cave: {fileID: 2003889933}
   is2D: 1
 --- !u!114 &1642607851
@@ -382,11 +382,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1642607849}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cf783e1ea832af44bb2f4cc857a101c, type: 3}
+  m_Script: {fileID: 11500000, guid: b45d7874cf035e349a2e2dce0c472707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 256
-  height: 128
+  width: 120
+  height: 56
   seed: 
   useRandomSeed: 1
   randomFillPercent: 51

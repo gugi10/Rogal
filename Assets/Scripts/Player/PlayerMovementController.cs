@@ -29,6 +29,9 @@ public class PlayerMovementController : MonoBehaviour {
         if(GetPlayerInputVector() != Vector3.zero) {
             Vector3 previousNonZeroInput = GetPlayerInputVector();
         }
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            animator.Play("Attack");
+        }
     }
 
     void SetMovementAnimationParams(Vector3 movement) {

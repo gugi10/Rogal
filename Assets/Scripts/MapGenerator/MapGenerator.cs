@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.IO;
+using System.Text;
 
 public class MapGenerator : MonoBehaviour {
-
+    //43-52
     public int width;
     public int height;
 
@@ -16,6 +18,9 @@ public class MapGenerator : MonoBehaviour {
 
     int[,] map;
 
+    string path = "Data/";
+    int programIteration = 0;
+
     void Start() {
         GenerateMap();
     }
@@ -26,6 +31,37 @@ public class MapGenerator : MonoBehaviour {
         }
     }
 
+    public void GenerateM(int [,] mapToLoad) {
+        
+    }
+
+    private void OnDrawGizmos() {
+        if(map != null) {
+            for(int x = 0; x <width; x++) {
+                for(int y=0; y<height; y++) {
+                    Gizmos.color = (map[x, y] == 1) ? Color.black : Color.white;
+                    Vector3 pos = new Vector3(-width / 2 + x + .5f, 0, -height / 2 + y + .5f);
+                    Gizmos.DrawCube(pos, Vector3.one);
+                }
+            }
+        }
+    }
+
+    void SaveDataToFile() {
+        StreamWriter writer = new StreamWriter(path + "Sample" + programIteration.ToString() + ".txt", true);
+        writer.WriteLine("WIDTH " + "HEIGHT " + "SEED");
+        writer.WriteLine(width.ToString()+ " " + height.ToString() + " " + seed.ToString());
+        StringBuilder builder = new StringBuilder();
+        for(int y = 0; y<height; y++) {
+            for(int x=0; x<width; x++) {
+                builder.Append(map[x, y].ToString() + " ");
+            }
+            //builder.Remove(builder.Length - 1, 1);
+            writer.WriteLine(builder);
+            builder = new StringBuilder();
+        }
+    }
+
     void GenerateMap() {
         map = new int[width, height];
         RandomFillMap();
@@ -33,8 +69,7 @@ public class MapGenerator : MonoBehaviour {
         for (int i = 0; i < 5; i++) {
             SmoothMap();
         }
-
-        ProcessMap();
+        //ProcessMap();
 
         int borderSize = 1;
         int[,] borderedMap = new int[width + borderSize * 2, height + borderSize * 2];
@@ -50,8 +85,10 @@ public class MapGenerator : MonoBehaviour {
             }
         }
 
-        MeshGenerator meshGen = GetComponent<MeshGenerator>();
-        meshGen.GenerateMesh(borderedMap, 1);
+        //MeshGenerator meshGen = GetComponent<MeshGenerator>();
+        //meshGen.GenerateMesh(borderedMap, 1);
+        StreamIO.SaveDataToFile(borderedMap, height, width, seed, programIteration);
+        programIteration++;
     }
 
     void ProcessMap() {
@@ -293,11 +330,11 @@ public class MapGenerator : MonoBehaviour {
     void RandomFillMap() {
 
         if (useRandomSeed) {
-            seed = Time.time.ToString();
+            seed = UnityEngine.Random.Range(0f, 1f).ToString();
         }
 
         System.Random pseudoRandom = new System.Random(seed.GetHashCode());
-
+        randomFillPercent = (pseudoRandom.Next(43, 52));
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (x == 0 || x == width - 1 || y == 0 || y == height - 1) {
@@ -315,10 +352,13 @@ public class MapGenerator : MonoBehaviour {
             for (int y = 0; y < height; y++) {
                 int neighbourWallTiles = GetSurroundingWallCount(x, y);
 
-                if (neighbourWallTiles > 4)
+                if (neighbourWallTiles > 4) {
                     map[x, y] = 1;
-                else if (neighbourWallTiles < 4)
+                    
+                }
+                else if (neighbourWallTiles < 4) {
                     map[x, y] = 0;
+                }
 
             }
         }
